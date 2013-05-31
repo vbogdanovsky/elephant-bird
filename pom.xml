@@ -86,7 +86,28 @@
     <hadoop-lzo.version>0.4.16</hadoop-lzo.version>
   </properties>
 
+    <distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>AdSafe3dParty</id>
+            <!--<url>scp://192.168.0.197/nexus/content/repositories/releases</url>-->
+            <name>AdSafe 3d party</name>
+            <url>http://persona-ci.vm.griddynamics.net:8082/nexus/content/repositories/thirdparty</url>
+        </repository>
+        <snapshotRepository>
+            <id>AdSafe3dParty</id>
+            <!--<url>scp://192.168.0.197/nexus/content/repositories/releases</url>-->
+            <name>AdSafe 3d party</name>
+            <url>http://persona-ci.vm.griddynamics.net:8082/nexus/content/repositories/Snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
   <repositories>
+      <!--<repository>
+          <id>AdSafe3dParty</id>
+          <url>http://persona-ci.vm.griddynamics.net:8082/nexus/content/repositories/thirdparty</url>
+      </repository>
+-->
     <repository>
       <id>twitter</id>
       <url>http://maven.twttr.com</url>

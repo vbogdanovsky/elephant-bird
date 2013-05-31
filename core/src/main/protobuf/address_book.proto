@@ -35,3 +35,25 @@ message PersonWithoutEmail {
   required int32 id = 2;
   repeated Person.PhoneNumber phone = 4;
 }
+
+message PersonParams {
+    optional Measurements measure = 1;
+    repeated Person.PhoneType phoneType = 2;
+    optional bool adult = 3;
+    optional int64 age = 4 [default = 20];
+}
+
+message Measurements {
+    optional int32 weight = 1;
+    optional int32 height = 2;
+    optional bool big = 3;
+    optional SizeEnum size = 4;
+    repeated int32 coin = 5;
+    optional bytes sign = 6;
+
+    enum SizeEnum {
+        S = 0;
+        M = 1;
+        L = 2;
+    }
+}

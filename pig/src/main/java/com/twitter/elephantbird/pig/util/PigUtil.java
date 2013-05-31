@@ -12,6 +12,8 @@ import com.twitter.elephantbird.util.Protobufs;
 import com.twitter.elephantbird.util.ThriftUtils;
 import com.twitter.elephantbird.util.TypeRef;
 
+import static com.google.protobuf.Descriptors.FieldDescriptor;
+
 public class PigUtil {
   /**
    *  Returns class using Pig's class loader.
@@ -92,5 +94,11 @@ public class PigUtil {
   /** Returns TypeRef using Pig class loader. */
   public static<T extends TBase<?,?>> TypeRef<T> getThriftTypeRef(String thriftClassName) {
     return ThriftUtils.getTypeRef(getClass(thriftClassName));
+  }
+
+  public static Object getProtobufFieldValue(Message msg, FieldDescriptor descriptor) {
+      boolean complexField = descriptor.getType() == FieldDescriptor.Type.MESSAGE || descriptor.isRepeated();
+      boolean isValueSet = complexField || msg.hasField(descriptor) || descriptor.hasDefaultValue();
+      return isValueSet ? msg.getField(descriptor) : null;
   }
 }

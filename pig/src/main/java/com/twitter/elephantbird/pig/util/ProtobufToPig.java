@@ -69,7 +69,7 @@ public class ProtobufToPig {
       // Walk through all the possible fields in the message.
       for (FieldDescriptor fieldDescriptor : msgDescriptor.getFields()) {
         // Get the set value, or the default value, or null.
-        Object fieldValue = msg.getField(fieldDescriptor);
+        Object fieldValue = PigUtil.getProtobufFieldValue(msg, fieldDescriptor);
 
         if (fieldDescriptor.getType() == FieldDescriptor.Type.MESSAGE) {
           tuple.set(curField++, messageToTuple(fieldDescriptor, fieldValue));

@@ -30,7 +30,7 @@ public class ProtobufTuple extends AbstractLazyTuple {
 
   protected Object getObjectAt(int idx) {
     FieldDescriptor fieldDescriptor = fieldDescriptors_.get(idx);
-    Object fieldValue = msg_.getField(fieldDescriptor);
+    Object fieldValue = PigUtil.getProtobufFieldValue(msg_, fieldDescriptor);
     return protoConv_.fieldToPig(fieldDescriptor, fieldValue);
   }
 

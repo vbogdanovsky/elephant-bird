@@ -1,10 +1,14 @@
 package com.twitter.elephantbird.pig.piggybank;
 
+import static com.twitter.data.proto.tutorial.AddressBookProtos.Measurements;
+import static com.twitter.data.proto.tutorial.AddressBookProtos.PersonParams;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.List;
 
+import com.google.protobuf.ByteString;
+import com.twitter.elephantbird.pig.util.ProtobufToPig;
 import org.apache.pig.LoadPushDown.RequiredField;
 import org.apache.pig.LoadPushDown.RequiredFieldList;
 import org.apache.pig.backend.executionengine.ExecException;
@@ -84,4 +88,46 @@ public class TestProtoToPig {
     return reqList;
   }
 
+    @Test
+    public void testProtoToPigWithUndefinedFields() throws Exception {
+        Measurements.Builder measurementsBuilder = Measurements.newBuilder();
+        Measurements measurements = measurementsBuilder.build();
+
+        Tuple tuple = new ProtobufToPig().toTuple(measurements);
+        assertEquals("(,,,,{},)", tuple.toString());
+
+        tuple = new ProtobufTuple(measurements);
+        assertEquals("(,,,,{},)", tuple.toString());
+
+        PersonParams.Builder personParamsBuilder = PersonParams.newBuilder();
+        personParamsBuilder.setMeasure(measurementsBuilder);
+        PersonParams personParams = personParamsBuilder.build();
+
+        tuple = new ProtobufToPig().toTuple(personParams);
+        assertEquals("((,,,,{},),{},,20)", tuple.toString());
+
+        tuple = new ProtobufTuple(personParams);
+        assertEquals("((,,,,{},),{},,20)", tuple.toString());
+
+        measurementsBuilder.setHeight(14).addCoin(5).addCoin(15)
+                           .setSign(ByteString.copyFromUtf8("asd"));
+        measurements = measurementsBuilder.build();
+        tuple = new ProtobufToPig().toTuple(measurements);
+        assertEquals("(,14,,,{(5),(15)},asd)", tuple.toString());
+
+        tuple = new ProtobufTuple(measurements);
+        assertEquals("(,14,,,{(5),(15)},asd)", tuple.toString());
+
+        personParamsBuilder.setAdult(true).setAge(50)
+                           .addPhoneType(Person.PhoneType.MOBILE)
+                           .addPhoneType(Person.PhoneType.HOME);
+        personParamsBuilder.setMeasure(measurementsBuilder);
+        personParams = personParamsBuilder.build();
+
+        tuple = new ProtobufToPig().toTuple(personParams);
+        assertEquals("((,14,,,{(5),(15)},asd),{(MOBILE),(HOME)},1,50)", tuple.toString());
+
+        tuple = new ProtobufTuple(personParams);
+        assertEquals("((,14,,,{(5),(15)},asd),{(MOBILE),(HOME)},1,50)", tuple.toString());
+    }
 }
