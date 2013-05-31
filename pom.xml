@@ -98,7 +98,7 @@
             <id>AdSafe3dParty</id>
             <!--<url>scp://192.168.0.197/nexus/content/repositories/releases</url>-->
             <name>AdSafe 3d party</name>
-            <url>http://persona-ci.vm.griddynamics.net:8082/nexus/content/repositories/Snapshots</url>
+            <url>http://persona-ci.vm.griddynamics.net:8082/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
